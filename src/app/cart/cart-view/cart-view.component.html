@@ -1,14 +1,15 @@
 <h2>Carrinho de Compras</h2>
 
-<ul>
+<ul *ngIf="(items$ | async)?.length">
   <li *ngFor="let item of (items$ | async)">
     {{ item.name }} - R$ {{ item.price | number: '1.2-2' }}
   </li>
 </ul>
 
+<p *ngIf="(items$ | async)?.length === 0">Seu carrinho está vazio. 🛒</p>
+
 <p *ngIf="(items$ | async)?.length">Total: R$ {{ getTotal() | number: '1.2-2' }}</p>
 
-<!-- Botão para limpar o carrinho -->
 <button (click)="clearCart()" *ngIf="(items$ | async)?.length">
   Limpar Carrinho
 </button>
