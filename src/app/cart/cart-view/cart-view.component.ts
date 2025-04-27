@@ -1,27 +1,43 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CartItemComponent } from '../cart-item/cart-item.component';
+import { EmptyCartComponent } from '../empty-cart/empty-cart.component';
+import { ButtonComponent } from '../../shared/button/button.component';
 import { CartService } from '../../core/cart.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-cart-view',
+  standalone: true,
+  imports: [
+    CommonModule,
+    CartItemComponent,
+    EmptyCartComponent,
+    ButtonComponent,
+  ],
   templateUrl: './cart-view.component.html',
   styleUrls: ['./cart-view.component.scss'],
 })
 export class CartViewComponent {
-  items$ = this.cartService.items$;
-  loading$ = this.cartService.loading$;
-  checkoutSuccess$ = this.cartService.checkoutSuccess$;
+  items$: Observable<any[]>;
+  loading$: Observable<boolean>;
+  checkoutSuccess$: Observable<boolean>;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService) {
+    this.items$ = this.cartService.items$;
+    this.loading$ = this.cartService.loading$;
+    this.checkoutSuccess$ = this.cartService.checkoutSuccess$;
+  }
 
-  getTotal() {
+  getTotal(): number {
     return this.cartService.getTotal();
   }
 
-  clearCart() {
-    this.cartService.clear();
+  checkout(): void {
+    this.cartService.checkout();
   }
 
-  checkout() {
-    this.cartService.checkout();
+  clearCart(): void {
+    this.cartService.clear();
   }
 }
