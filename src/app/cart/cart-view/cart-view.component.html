@@ -1,14 +1,23 @@
 <h2>Carrinho de Compras</h2>
 
-<ul>
-  <li *ngFor="let item of (items$ | async)">
-    {{ item.name }} - R$ {{ item.price | number: '1.2-2' }}
-  </li>
-</ul>
+<ng-container *ngIf="(items$ | async)?.length; else emptyCart">
+  <app-cart-item *ngFor="let item of (items$ | async)" [item]="item"></app-cart-item>
 
-<p *ngIf="(items$ | async)?.length">Total: R$ {{ getTotal() | number: '1.2-2' }}</p>
+  <p class="total">Total: R$ {{ getTotal() | number: '1.2-2' }}</p>
 
-<!-- Botão para limpar o carrinho -->
-<button (click)="clearCart()" *ngIf="(items$ | async)?.length">
-  Limpar Carrinho
-</button>
+  <div class="actions">
+    <app-button label="Finalizar Compra" (click)="checkout()" [disabled]="(loading$ | async) ?? false">
+    </app-button>
+
+    <app-button label="Limpar Carrinho" (click)="clearCart()" [disabled]="(loading$ | async) ?? false">
+    </app-button>
+
+  </div>
+
+  <p *ngIf="(loading$ | async)">Processando pagamento...</p>
+  <p *ngIf="(checkoutSuccess$ | async)">Compra realizada com sucesso! 🎉</p>
+</ng-container>
+
+<ng-template #emptyCart>
+  <app-empty-cart></app-empty-cart>
+</ng-template>

@@ -1,0 +1,5 @@
+<div class="product-item">
+  <h3>{{ product.name }}</h3>
+  <p>R$ {{ product.price | number: '1.2-2' }}</p>
+  <app-button label="Adicionar ao carrinho" (click)="addToCart()"></app-button>
+</div>

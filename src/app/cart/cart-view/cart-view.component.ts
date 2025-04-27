@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
-import { CartService } from '../cart.service';
+import { CartService } from '../../core/cart.service';
 
 @Component({
   selector: 'app-cart-view',
   templateUrl: './cart-view.component.html',
+  styleUrls: ['./cart-view.component.scss'],
 })
 export class CartViewComponent {
   items$ = this.cartService.items$;
+  loading$ = this.cartService.loading$;
+  checkoutSuccess$ = this.cartService.checkoutSuccess$;
 
   constructor(private cartService: CartService) {}
 
@@ -16,5 +19,9 @@ export class CartViewComponent {
 
   clearCart() {
     this.cartService.clear();
+  }
+
+  checkout() {
+    this.cartService.checkout();
   }
 }
