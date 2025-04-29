@@ -4,7 +4,6 @@ import { CartItemComponent } from '../cart-item/cart-item.component';
 import { EmptyCartComponent } from '../empty-cart/empty-cart.component';
 import { ButtonComponent } from '../../shared/button/button.component';
 import { CartService } from '../../core/cart.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-cart-view',
@@ -19,15 +18,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./cart-view.component.scss'],
 })
 export class CartViewComponent {
-  items$: Observable<any[]>;
-  loading$: Observable<boolean>;
-  checkoutSuccess$: Observable<boolean>;
-
-  constructor(private cartService: CartService) {
-    this.items$ = this.cartService.items$;
-    this.loading$ = this.cartService.loading$;
-    this.checkoutSuccess$ = this.cartService.checkoutSuccess$;
-  }
+  constructor(public cartService: CartService) {}
 
   getTotal(): number {
     return this.cartService.getTotal();

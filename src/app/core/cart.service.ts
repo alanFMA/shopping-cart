@@ -1,39 +1,35 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, computed, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
-  private itemsSubject = new BehaviorSubject<any[]>([]);
-  items$ = this.itemsSubject.asObservable();
+  items = signal<any[]>([]);
+  loading = signal(false);
+  checkoutSuccess = signal(false);
 
-  private loadingSubject = new BehaviorSubject<boolean>(false);
-  loading$ = this.loadingSubject.asObservable();
-
-  private checkoutSuccessSubject = new BehaviorSubject<boolean>(false);
-  checkoutSuccess$ = this.checkoutSuccessSubject.asObservable();
+  hasItems = computed(() => this.items().length > 0);
+  isEmpty = computed(() => this.items().length === 0);
 
   addProduct(product: any) {
-    const currentItems = this.itemsSubject.value;
-    this.itemsSubject.next([...currentItems, product]);
+    this.items.update((items) => [...items, product]);
   }
 
   clear() {
-    this.itemsSubject.next([]);
-    this.checkoutSuccessSubject.next(false);
+    this.items.set([]);
+    this.checkoutSuccess.set(false);
   }
 
   checkout() {
-    this.loadingSubject.next(true);
+    this.loading.set(true);
     setTimeout(() => {
-      this.loadingSubject.next(false);
-      this.checkoutSuccessSubject.next(true);
-      this.itemsSubject.next([]);
+      this.loading.set(false);
+      this.checkoutSuccess.set(true);
+      this.clear();
     }, 1500); // Simula chamada de API
   }
 
   getTotal() {
-    return this.itemsSubject.value.reduce((sum, item) => sum + item.price, 0);
+    return this.items().reduce((sum, item) => sum + item.price, 0);
   }
 }
