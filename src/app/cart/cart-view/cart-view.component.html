@@ -10,6 +10,9 @@
 
 <p *ngIf="(items$ | async)?.length">Total: R$ {{ getTotal() | number: '1.2-2' }}</p>
 
-<button (click)="clearCart()" *ngIf="(items$ | async)?.length">
-  Limpar Carrinho
-</button>
+<div *ngIf="(items$ | async)?.length">
+  <button (click)="checkout()" [disabled]="(loading$ | async)">Finalizar Compra</button>
+  <button (click)="clearCart()" [disabled]="(loading$ | async)">Limpar Carrinho</button>
+</div>
+
+<p *ngIf="(loading$ | async)">Processando pagamento...</p>
