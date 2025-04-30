@@ -30,7 +30,7 @@ export class CartService {
       this.loadingSubject.next(false);
       this.checkoutSuccessSubject.next(true);
       this.itemsSubject.next([]);
-    }, 1500); // Simula chamada de API
+    }, 1500);
   }
 
   resetCheckoutSuccess(): void {
