@@ -5,5 +5,10 @@ import { CartViewComponent } from './cart/cart-view/cart-view.component';
 export const routes: Routes = [
   { path: '', component: ProductListComponent },
   { path: 'cart', component: CartViewComponent },
+  {
+    path: 'about',
+    loadComponent: () =>
+      import('./about/about.component').then((m) => m.AboutComponent),
+  },
   { path: '**', redirectTo: '' },
 ];

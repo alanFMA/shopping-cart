@@ -1,4 +1,4 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -26,10 +26,14 @@ export class CartService {
       this.loading.set(false);
       this.checkoutSuccess.set(true);
       this.clear();
-    }, 1500); // Simula chamada de API
+    }, 1500);
   }
 
   getTotal() {
     return this.items().reduce((sum, item) => sum + item.price, 0);
+  }
+
+  resetCheckoutSuccess() {
+    this.checkoutSuccess.set(false);
   }
 }

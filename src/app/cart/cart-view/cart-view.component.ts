@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartItemComponent } from '../cart-item/cart-item.component';
 import { EmptyCartComponent } from '../empty-cart/empty-cart.component';
@@ -18,17 +18,44 @@ import { CartService } from '../../core/cart.service';
   styleUrls: ['./cart-view.component.scss'],
 })
 export class CartViewComponent {
-  constructor(public cartService: CartService) {}
+  cartService = inject(CartService);
 
-  getTotal(): number {
-    return this.cartService.getTotal();
+  total = computed(() =>
+    this.cartService.items().reduce((acc, item) => acc + item.price, 0)
+  );
+
+  constructor() {
+    // 🔁 Logs reativos
+    effect(() => {
+      const items = this.cartService.items();
+      console.log('Itens (effect 1):', items.length);
+    });
+
+    effect(() => {
+      const names = this.cartService
+        .items()
+        .map((i) => i.name)
+        .join(', ');
+      console.log('Itens (effect 2):', names);
+    });
+
+    effect(() => {
+      if (this.cartService.checkoutSuccess()) {
+        alert('Compra realizada com sucesso (com signals)!');
+        this.cartService.resetCheckoutSuccess();
+      }
+    });
   }
 
-  checkout(): void {
+  checkout() {
     this.cartService.checkout();
   }
 
-  clearCart(): void {
+  clearCart() {
     this.cartService.clear();
+  }
+
+  getTotal(): number {
+    return this.total();
   }
 }
