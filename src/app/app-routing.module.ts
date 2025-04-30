@@ -6,6 +6,11 @@ import { CartViewComponent } from './cart/cart-view/cart-view.component';
 const routes: Routes = [
   { path: '', component: ProductListComponent },
   { path: 'cart', component: CartViewComponent },
+  {
+    path: 'about',
+    loadChildren: () =>
+      import('./about/about.module').then((m) => m.AboutModule),
+  },
   { path: '**', redirectTo: '' },
 ];
 
