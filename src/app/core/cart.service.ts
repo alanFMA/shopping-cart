@@ -33,6 +33,10 @@ export class CartService {
     }, 1500); // Simula chamada de API
   }
 
+  resetCheckoutSuccess(): void {
+    this.checkoutSuccessSubject.next(false);
+  }
+
   getTotal() {
     return this.itemsSubject.value.reduce((sum, item) => sum + item.price, 0);
   }

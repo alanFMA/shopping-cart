@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CartService } from '../../core/cart.service';
 import { Subscription } from 'rxjs';
+import { filter, distinctUntilChanged, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cart-view',
@@ -30,11 +31,14 @@ export class CartViewComponent implements OnInit, OnDestroy {
     );
 
     this.subscriptions.push(
-      this.cartService.checkoutSuccess$.subscribe((success) => {
-        if (success) {
+      this.cartService.checkoutSuccess$
+        .pipe(
+          filter((success) => success),
+          take(1)
+        )
+        .subscribe(() => {
           alert('Compra realizada com sucesso (do subscribe em ngOnInit)!');
-        }
-      })
+        })
     );
   }
 
