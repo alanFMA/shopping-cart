@@ -25,7 +25,6 @@ export class CartViewComponent {
   );
 
   constructor() {
-    // 🔁 Logs reativos
     effect(() => {
       const items = this.cartService.items();
       console.log('Itens (effect 1):', items.length);
